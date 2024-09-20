@@ -1,7 +1,8 @@
 ﻿namespace CinemaApp.Common
 {
-    public class ApplicationConstants
+    public static class ApplicationConstants
     {
+      
 
     }
 }

@@ -61,5 +61,23 @@ namespace CinemaApp.Web.Controllers
             }
             return View(movie);
         }
+
+        public IActionResult Delete(string id)
+        {
+            bool isValidGuid = Guid.TryParse(id, out Guid guidId);
+            if (!isValidGuid)
+            {
+                return RedirectToAction("Index");
+            }
+            Movie movie = context.Movies.FirstOrDefault(m => m.Id == guidId)!;
+            if (movie == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            context.Movies.Remove(movie);
+            context.SaveChanges();
+            return RedirectToAction("Index");
+        }
     }
 }

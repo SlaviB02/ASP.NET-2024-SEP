@@ -14,7 +14,7 @@ namespace CinemaApp.Common
             public const int TitleMaxLength = 50;
             public const int GenreMaxLength = 20;
             public const int GenreMinLength = 5;
-            public const int DirectorMinLength = 10;
+            public const int DirectorMinLength = 5;
             public const int DirectorMaxLength = 50;
             public const int DescriptionMinLength = 50;
             public const int DescriptionMaxLength = 400;

@@ -23,6 +23,7 @@
                 <td>
                     <a asp-action="Details" asp-route-id="@movie.Id" class="btn btn-info">Details</a>
                     <a asp-action="Delete" asp-route-id="@movie.Id" class="btn btn-info">Delete</a>
+                    <a asp-action="AddToProgram" asp-route-movieid="@movie.Id" class="btn btn-info">Add to Program</a>
                 </td>
             </tr>
         }

@@ -23,7 +23,9 @@ namespace CinemaApp.Common
         }
         public static class Cinema
         {
+            public const int CinemaNameMinLength = 3;
             public const int CinemaNameMaxLength = 50;
+            public const int LocationMinLength = 3;
             public const int LocationMaxLength = 85;
         }
     }

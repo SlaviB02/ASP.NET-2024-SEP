@@ -34,6 +34,8 @@ namespace CinemaApp.Data.Models
 
         public required string Description { get; set; }
 
+        public ICollection<CinemaMovie> CinemaMovies { get; set; } = new HashSet<CinemaMovie>();
+
 
     }
 }

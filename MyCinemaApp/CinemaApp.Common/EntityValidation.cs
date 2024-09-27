@@ -21,5 +21,10 @@ namespace CinemaApp.Common
             public const int DurationMinValue = 1;
             public const int DurationMaxValue = 999;
         }
+        public static class Cinema
+        {
+            public const int CinemaNameMaxLength = 50;
+            public const int LocationMaxLength = 85;
+        }
     }
 }

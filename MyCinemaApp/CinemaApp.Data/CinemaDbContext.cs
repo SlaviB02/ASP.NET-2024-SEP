@@ -22,6 +22,10 @@ namespace CinemaApp.Data
         }
         public required DbSet<Movie> Movies { get; set; }
 
+        public required DbSet<Cinema> Cinemas { get; set; }
+
+        public required DbSet<CinemaMovie>CinemaMovies { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 

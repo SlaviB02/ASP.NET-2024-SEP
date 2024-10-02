@@ -9,13 +9,13 @@ namespace CinemaApp.Web.Controllers
 {
     public class CinemaController(CinemaDbContext context) : Controller
     {
-        public  IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var cinemas=context
+            var cinemas=await context
                 .Cinemas
-                .OrderBy (c => c.Location)
-                .ThenBy (c => c.Name)
-                .ToList();
+                .OrderBy(c => c.Location)
+                .ThenBy(c => c.Name)
+                .ToListAsync();
 
 
             return View(cinemas);
@@ -26,7 +26,7 @@ namespace CinemaApp.Web.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(CinemaCreateViewModel  input)
+        public async Task<IActionResult> Create(CinemaCreateViewModel  input)
         {
             if(!ModelState.IsValid)
             {
@@ -38,14 +38,14 @@ namespace CinemaApp.Web.Controllers
                 Location = input.Location,
             };
 
-            context.Cinemas.Add(cinema);
-            context.SaveChanges();
+           await context.Cinemas.AddAsync(cinema);
+           await context.SaveChangesAsync();
 
             return RedirectToAction("Index");
 
         }
 
-        public IActionResult Details(string id)
+        public async Task<IActionResult> Details(string id)
         {
             bool isValidGuid = Guid.TryParse(id, out Guid guidId);
             if (!isValidGuid)
@@ -53,11 +53,11 @@ namespace CinemaApp.Web.Controllers
                 return RedirectToAction("Index");
             }
 
-            var cinema=context
+            var cinema= await context
                 .Cinemas
                 .Include(cm=>cm.CinemaMovies)
                 .ThenInclude(m=>m.Movie)
-                .FirstOrDefault(c=>c.Id==guidId);
+                .FirstOrDefaultAsync(c=>c.Id==guidId);
 
             if (cinema==null)
             {

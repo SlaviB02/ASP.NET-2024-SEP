@@ -3,20 +3,17 @@ using CinemaApp.Data.Models;
 using CinemaApp.Web.ViewModels.Cinema;
 using CinemaApp.Web.ViewModels.Movie;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 
 namespace CinemaApp.Web.Controllers
 {
-    public class MovieController : Controller
+    public class MovieController(CinemaDbContext context) : Controller
     {
-        private CinemaDbContext context;
-        public MovieController(CinemaDbContext context)
+        
+        public async Task<IActionResult> Index()
         {
-            this.context = context;
-        }
-        public IActionResult Index()
-        {
-           IEnumerable<Movie> movies=context.Movies.ToList();
+           IEnumerable<Movie> movies=await context.Movies.ToListAsync();
             return View(movies);
         }
         [HttpGet]
@@ -25,7 +22,7 @@ namespace CinemaApp.Web.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(AddMovieInputModel inputModel)
+        public async Task<IActionResult> Create(AddMovieInputModel inputModel)
         {
             if (!ModelState.IsValid)
             {
@@ -42,12 +39,12 @@ namespace CinemaApp.Web.Controllers
                 Description = inputModel.Description,
             };
          
-            context.Movies.Add(movie);
-            context.SaveChanges();
+            await context.Movies.AddAsync(movie);
+            await context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
-        public IActionResult Details(string id)
+        public async Task<IActionResult> Details(string id)
         {
             bool isValidGuid=Guid.TryParse(id, out Guid guidId);
             if(!isValidGuid)
@@ -55,7 +52,7 @@ namespace CinemaApp.Web.Controllers
                 return RedirectToAction("Index");
             }
 
-            Movie movie = context.Movies.FirstOrDefault(m => m.Id == guidId)!;
+            Movie? movie = await context.Movies.FirstOrDefaultAsync(m => m.Id == guidId);
             if(movie == null)
             {
                 return RedirectToAction("Index");
@@ -63,25 +60,25 @@ namespace CinemaApp.Web.Controllers
             return View(movie);
         }
 
-        public IActionResult Delete(string id)
+        public async Task<IActionResult> Delete(string id)
         {
             bool isValidGuid = Guid.TryParse(id, out Guid guidId);
             if (!isValidGuid)
             {
                 return RedirectToAction("Index");
             }
-            Movie movie = context.Movies.FirstOrDefault(m => m.Id == guidId)!;
+            Movie? movie =await context.Movies.FirstOrDefaultAsync(m => m.Id == guidId);
             if (movie == null)
             {
                 return RedirectToAction("Index");
             }
 
-            context.Movies.Remove(movie);
-            context.SaveChanges();
+           context.Movies.Remove(movie);
+           await context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
         [HttpGet]
-        public IActionResult AddToProgram(string movieId)
+        public async Task<IActionResult> AddToProgram(string movieId)
         {
             bool isValidGuid = Guid.TryParse(movieId, out Guid guidId);
             if (!isValidGuid)
@@ -95,7 +92,7 @@ namespace CinemaApp.Web.Controllers
                 return RedirectToAction("Index");
             }
 
-            var cinemas = context.Cinemas.ToList();
+            var cinemas =await context.Cinemas.ToListAsync();
 
             var viewModel = new AddMovieToCinemaProgram
             {
@@ -114,15 +111,15 @@ namespace CinemaApp.Web.Controllers
             return View(viewModel);
         }
         [HttpPost]
-        public IActionResult AddToProgram(AddMovieToCinemaProgram model)
+        public async Task<IActionResult> AddToProgram(AddMovieToCinemaProgram model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            var existingCinemaMovies=context.CinemaMovies
+            var existingCinemaMovies= await context.CinemaMovies
                 .Where(cm=>cm.MovieId.ToString()==model.MovieId)
-                .ToList();
+                .ToListAsync();
 
             context.RemoveRange(existingCinemaMovies);
 
@@ -136,10 +133,10 @@ namespace CinemaApp.Web.Controllers
                         CinemaId = Guid.Parse(cinema.Id),
                         MovieId = Guid.Parse(model.MovieId),
                     };
-                    context.CinemaMovies.Add(cinemaMovie);
+                   await context.CinemaMovies.AddAsync(cinemaMovie);
                 }
             }
-            context.SaveChanges();
+           await context.SaveChangesAsync();
             return RedirectToAction("Index");   
         }
     }

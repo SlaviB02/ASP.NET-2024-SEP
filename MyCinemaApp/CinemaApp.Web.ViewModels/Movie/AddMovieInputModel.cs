@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using static CinemaApp.Common.EntityValidation.Movie;
 
 
+
 namespace CinemaApp.Web.ViewModels.Movie
 {
     public class AddMovieInputModel
@@ -37,5 +38,7 @@ namespace CinemaApp.Web.ViewModels.Movie
         [MaxLength(DescriptionMaxLength)]
 
         public required string Description { get; set; }
+
+        public string ImageUrl { get; set; } = null!;
     }
 }

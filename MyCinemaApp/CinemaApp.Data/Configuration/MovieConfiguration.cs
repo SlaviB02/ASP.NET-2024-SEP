@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static CinemaApp.Common.ApplicationConstants;
 
 namespace CinemaApp.Data.Configuration
 {
@@ -15,6 +16,10 @@ namespace CinemaApp.Data.Configuration
         public void Configure(EntityTypeBuilder<Movie> builder)
         {
             builder.HasData(SeedMovies());
+
+            builder.Property(i => i.ImageUrl)
+                .IsRequired(false)
+                .HasDefaultValue(defaultUrlImage);
         }
 
         private List<Movie> SeedMovies()

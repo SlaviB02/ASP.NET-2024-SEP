@@ -4,6 +4,7 @@ using CinemaApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CinemaApp.Data.Migrations
 {
     [DbContext(typeof(CinemaDbContext))]
-    partial class CinemaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241009174122_UserMovieTable")]
+    partial class UserMovieTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,19 +48,19 @@ namespace CinemaApp.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("996896d0-9951-447e-8eec-6768ce8e0676"),
+                            Id = new Guid("056f0004-2088-47e8-a546-6b05731d844a"),
                             Location = "Sofia",
                             Name = "Cinema City"
                         },
                         new
                         {
-                            Id = new Guid("d3f2839c-e7d3-4b19-83aa-328367e26fb5"),
+                            Id = new Guid("bba375ca-513c-4183-a31b-3635db0797dc"),
                             Location = "Burgas",
                             Name = "Cinema City"
                         },
                         new
                         {
-                            Id = new Guid("6b60cc18-ff1f-4003-a936-c954f2eb562f"),
+                            Id = new Guid("c40827e8-dfea-4aef-bfe9-f5677ff105ad"),
                             Location = "Plovdiv",
                             Name = "Imax"
                         });
@@ -102,11 +105,6 @@ namespace CinemaApp.Data.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<string>("ImageUrl")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("~/images/no-image.jfif");
-
                     b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("datetime2");
 
@@ -122,7 +120,7 @@ namespace CinemaApp.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("c370ab68-c08a-4d75-8770-4c3980a2fcbc"),
+                            Id = new Guid("29d0a26f-d6b4-41af-8750-243cc23de542"),
                             Description = "The Fall Guy is a 2024 American action comedy film directed by David Leitch and written by Drew Pearce, loosely based on the 1980s TV series. The plot follows a stuntman (Ryan Gosling) working on his ex-girlfriend's (Emily Blunt) directorial debut action film, only to find himself involved in a conspiracy surrounding the film's lead actor (Aaron Taylor-Johnson). ",
                             Director = "David Leech",
                             Duration = 125,
@@ -132,7 +130,7 @@ namespace CinemaApp.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("28f7a9fc-1ab9-4125-91ba-af533bd0125e"),
+                            Id = new Guid("e6a8ad1b-75d5-403f-a70c-896bd80af623"),
                             Description = "Deadpool & Wolverine is a 2024 American superhero film based on Marvel Comics featuring the characters Deadpool and Wolverine. Produced by Marvel Studios, Maximum Effort, and 21 Laps Entertainment, and distributed by Walt Disney Studios Motion Pictures, it is the 34th film in the Marvel Cinematic Universe (MCU) and the sequel to Deadpool (2016) and Deadpool 2 (2018). ",
                             Director = "Shaun Levi",
                             Duration = 127,

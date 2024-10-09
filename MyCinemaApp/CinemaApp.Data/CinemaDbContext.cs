@@ -28,6 +28,8 @@ namespace CinemaApp.Data
 
         public DbSet<CinemaMovie> CinemaMovies { get; set; } = null!;
 
+        public DbSet<UserMovie> UsersMovies { get; set; } = null!;
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 

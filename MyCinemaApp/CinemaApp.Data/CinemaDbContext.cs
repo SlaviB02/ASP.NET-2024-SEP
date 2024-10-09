@@ -1,4 +1,6 @@
 ﻿using CinemaApp.Data.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CinemaApp.Data
 {
-    public class CinemaDbContext:DbContext
+    public class CinemaDbContext:IdentityDbContext<IdentityUser>
     {
         public CinemaDbContext()
         {
@@ -20,11 +22,11 @@ namespace CinemaApp.Data
         {
             
         }
-        public required DbSet<Movie> Movies { get; set; }
+        public DbSet<Movie> Movies { get; set; } = null!;
 
-        public required DbSet<Cinema> Cinemas { get; set; }
+        public DbSet<Cinema> Cinemas { get; set; } = null!;
 
-        public required DbSet<CinemaMovie>CinemaMovies { get; set; }
+        public DbSet<CinemaMovie> CinemaMovies { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

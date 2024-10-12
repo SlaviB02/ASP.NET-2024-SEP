@@ -2,7 +2,7 @@
 {
     public static class ApplicationConstants
     {
-      public const string defaultUrlImage = "~/images/no-image.jfif";
+      public const string defaultUrlImage = "/images/no-image.jfif";
 
     }
 }

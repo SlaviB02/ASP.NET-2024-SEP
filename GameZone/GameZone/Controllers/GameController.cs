@@ -87,6 +87,7 @@ namespace GameZone.Controllers
         {
             var games= await context
                 .Games
+                .Where(g=>g.IsDeleted==false)
                 .Select(g=>new AllGamesViewModel
                 {
                     ImageUrl = g.ImageUrl,
@@ -94,7 +95,7 @@ namespace GameZone.Controllers
                     Genre = g.Genre.Name,
                     ReleasedOn=g.ReleasedOn.ToString(DateFormat),
                     Id=g.Id,
-                    Publisher=g.Publisher.UserName
+                    Publisher=g.Publisher.UserName,
                 })
                 .ToListAsync();
 
@@ -105,7 +106,7 @@ namespace GameZone.Controllers
         {
             var game=await context.Games.FirstOrDefaultAsync(g => g.Id == id);
 
-            if(game==null)
+            if(game==null || game.IsDeleted==true)
             {
                 return BadRequest();
             }
@@ -143,7 +144,7 @@ namespace GameZone.Controllers
 
             var games = await context
                 .GamersGames
-                .Where(g=>g.GamerId == userId)
+                .Where(g=>g.GamerId == userId && g.Game.IsDeleted==false)
                 .Select(g => new AllGamesViewModel
                 {
                     ImageUrl = g.Game.ImageUrl,
@@ -162,7 +163,7 @@ namespace GameZone.Controllers
         {
             var game = await context.Games.FirstOrDefaultAsync(g => g.Id == id);
 
-            if(game==null)
+            if(game==null || game.IsDeleted==true)
             {
                 return BadRequest();
             }
@@ -190,7 +191,7 @@ namespace GameZone.Controllers
 
          
             
-            if (game == null)
+            if (game == null || game.IsDeleted == true)
             {
                 return BadRequest();
             }
@@ -221,7 +222,7 @@ namespace GameZone.Controllers
         {
             var game = await context.Games.FirstOrDefaultAsync(g => g.Id == id);
 
-            if (game == null)
+            if (game == null || game.IsDeleted == true)
             {
                 return BadRequest();
             }
@@ -258,7 +259,7 @@ namespace GameZone.Controllers
         {
 
             var model = await context.Games
-                .Where(g => g.Id == id)
+                .Where(g => g.Id == id && g.IsDeleted==false)
                 .Select(g => new DetailsForGame()
                 {
                     Title = g.Title,
@@ -277,7 +278,7 @@ namespace GameZone.Controllers
         public async Task<IActionResult> Delete (int id)
         {
             var model = await context.Games
-                 .Where(g => g.Id == id)
+                 .Where(g => g.Id == id && g.IsDeleted==false)
                  .Select(g => new DeleteGameModel()
                  {
                      Title = g.Title,    
@@ -295,12 +296,12 @@ namespace GameZone.Controllers
         {
             var game=await context.Games.FirstOrDefaultAsync(g=>g.Id==id);
 
-            if (game == null)
+            if (game == null || game.IsDeleted == true  )
             {
                 return BadRequest();
             }
 
-            context.Games.Remove(game);
+            game.IsDeleted = true;
 
             await context.SaveChangesAsync();
 

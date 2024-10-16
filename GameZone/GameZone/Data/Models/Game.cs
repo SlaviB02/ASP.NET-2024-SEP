@@ -38,5 +38,7 @@ namespace GameZone.Data.Models
 
         public ICollection<GamerGame> GamersGames { get; set; } = new HashSet<GamerGame>();
 
+        public bool IsDeleted {  get; set; }
+
     }
 }

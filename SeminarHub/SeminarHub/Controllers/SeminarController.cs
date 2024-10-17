@@ -23,6 +23,7 @@ namespace SeminarHub.Controllers
         public async Task<IActionResult> All()
         {
             var seminars =  await context.Seminars
+                .Where(s=>s.IsDeleted==false)
                 .Select(s => new SeminarAllViewModel
                 {
                     Topic = s.Topic,
@@ -94,6 +95,7 @@ namespace SeminarHub.Controllers
             var seminars = await context.SeminarsParticipants
                 .Where(p => p.ParticipantId == userId)
                .Include(s => s.Seminar)
+               .Where(s=>s.Seminar.IsDeleted == false)
                 .Select(s => new SeminarAllViewModel
                 {
                     Topic = s.Seminar.Topic,
@@ -113,7 +115,7 @@ namespace SeminarHub.Controllers
 
             var seminar=await context.Seminars.FirstOrDefaultAsync(s => s.Id == id);
 
-            if(seminar == null)
+            if(seminar == null || seminar.IsDeleted==true)
             {
                 return RedirectToAction("All");
             }
@@ -147,7 +149,7 @@ namespace SeminarHub.Controllers
 
             var seminar = await context.Seminars.FirstOrDefaultAsync(s => s.Id == id);
 
-            if (seminar == null)
+            if (seminar == null || seminar.IsDeleted==true)
             {
                 return RedirectToAction("All");
             }
@@ -185,7 +187,7 @@ namespace SeminarHub.Controllers
 
             var categories=await GetCategories();
             var seminar = await context.Seminars
-                .Where(s=>s.Id==id)
+                .Where(s=>s.Id==id && s.IsDeleted==false)
                 .Select(s => new SeminarAddModel()
                 {
 
@@ -213,7 +215,7 @@ namespace SeminarHub.Controllers
 
             string userId = GetUserId();    
 
-            if (seminar==null || seminar.OrganizerId!=userId)
+            if (seminar==null || seminar.OrganizerId!=userId || seminar.IsDeleted==true)
             {
                 return RedirectToAction("All");
             }
@@ -289,12 +291,12 @@ namespace SeminarHub.Controllers
             var seminar = await context.Seminars.FindAsync(model.Id);
 
             string userId=GetUserId();  
-            if (seminar == null || seminar.OrganizerId!=userId)
+            if (seminar == null || seminar.OrganizerId!=userId || seminar.IsDeleted==true)
             {
                 return RedirectToAction("All");
             }
 
-            context.Seminars.Remove(seminar);
+            seminar.IsDeleted = true;
             await context.SaveChangesAsync();
 
             return RedirectToAction("All");

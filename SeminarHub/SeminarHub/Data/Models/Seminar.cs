@@ -40,5 +40,7 @@ namespace SeminarHub.Data.Models
         public Category Category { get; set; } = null!;
 
         public ICollection<SeminarParticipant> SeminarsParticipants { get; set; } = new HashSet<SeminarParticipant>();
+
+        public bool IsDeleted {  get; set; }
     }
 }
